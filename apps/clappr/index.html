@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link
+      type="image/png"
+      rel="shortcut icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link
+      type="image/png"
+      rel="icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link
+      type="image/png"
+      rel="apple-touch-icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      [data-player],
+      .level_selector[data-level-selector] button,
+      .media-control[data-media-control]
+        .media-control-layer[data-controls]
+        .playback_rate[data-playback-rate-select]
+        button.media-control-button.media-control-icon {
+        font-family: "Lexend Deca", "Roboto", "Open Sans", Arial, sans-serif !important;
+      }
+      .video {
+        height: 100vh;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        justify-content: center;
+      }
+      .level_selector[data-level-selector] button,
+      .media-control[data-media-control]
+        .media-control-layer[data-controls]
+        button.media-control-button[data-hd-indicator].enabled {
+        padding-bottom: 4px;
+      }
+    </style>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@clappr/hlsjs-playback@latest/dist/hlsjs-playback.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/gh/clappr/clappr-level-selector-plugin@latest/dist/level-selector.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/gh/clappr/dash-shaka-playback@latest/dist/dash-shaka-playback.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/clappr-playback-rate-plugin@latest/lib/clappr-playback-rate-plugin.min.js"
+    ></script>
+  </head>
+  <body>
+    <div class="video" id="player-wrapper"></div>
+    <script>
+      /*  Custom HLS for testing out the player :
+        "https://content.jwplatform.com/manifests/yp34SRmf.m3u8",
+        "https://assets.afcdn.com/video49/20210722/v_645516.m3u8",
+        "https://storage.googleapis.com/shaka-demo-assets/angel-one-hls/hls.m3u8",
+      */
+
+      var vidtitle = getParameter("title");
+      if (!getParameter("title")) {
+        document.title = "Clappr Play";
+      } else {
+        document.title = vidtitle;
+      }
+
+      function getParameter(parameterName) {
+        let parameters = new URLSearchParams(window.location.search);
+        return parameters.get(parameterName);
+      }
+
+      var playerget = new Clappr.Player({
+        source: getParameter("link"),
+        mimeType: getParameter("type") + "/" + getParameter("ext"),
+        width: "100%",
+        height: "auto",
+        poster:
+          "https://source.unsplash.com/854x480/?nature,ocean,space,night,evening",
+        parentId: "#player-wrapper",
+        plugins: [
+          HlsjsPlayback,
+          LevelSelector,
+          DashShakaPlayback,
+          PlaybackRatePlugin,
+        ],
+        exitFullscreenOnEnd: false,
+        levelSelectorConfig: {
+          title: "Quality",
+          labels: {
+            8: " ",
+            7: " ",
+            6: " ",
+            5: " ",
+            4: " ",
+            3: " ",
+            2: " ", // 500kbps
+            1: " ", // 240kbps
+            0: " ", // 120kbps
+          },
+          labelCallback: function (playbackLevel, customLabel) {
+            return customLabel + playbackLevel.level.height + "p ";
+          },
+        },
+
+        // The Captions Settings
+        closedCaptionsConfig: {
+          title: "Subtitles", // default is none
+          ariaLabel: "Closed Captions", // Default is 'cc-button'
+        },
+
+        // The Playback Speed Settings
+        playbackRateConfig: {
+          defaultValue: 1,
+          options: [
+            { value: 0.5, label: "0.50x" },
+            { value: 0.75, label: "0.75x" },
+            { value: 1, label: "1.00x" },
+            { value: 1.25, label: "1.25x" },
+            { value: 1.5, label: "1.50x" },
+            { value: 1.75, label: "1.75x" },
+          ],
+        },
+      });
+      playerget.getPlugin("click_to_pause").disable();
+    </script>
+  </body>
+</html>

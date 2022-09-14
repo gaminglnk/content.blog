@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Shaka Player ui compiled library: -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.2.0/shaka-player.ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.2.0/shaka-player.compiled.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mux.js@6.2.0/dist/mux.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script
+      src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"
+      defer
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.2.0/controls.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Material+Icons+Sharp"
+      rel="stylesheet"
+    />
+
+    <title>Live Stream</title>
+    <script src="shaka/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="shaka/theme.css" />
+    <style>
+      .shaka-video-container * {
+        font-family: "Lexend Deca", "Mulish", "Roboto", sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="youtube-theme"
+      data-shaka-player-container
+      style="max-width: 60em; height: auto"
+      data-shaka-player-cast-receiver-id="07AEE832"
+    >
+      <video
+        autoplay
+        data-shaka-player
+        poster="https://source.unsplash.com/840x480/?nature,ocean,space,night,evening"
+        id="video"
+        style="width: 100%; height: 100%"
+      ></video>
+    </div>
+    <!-- The data-shaka-player-container tag will make the UI library place the controls in this div.
+         The data-shaka-player-cast-receiver-id tag allows you to provide a Cast Application ID that
+           the cast button will cast to; the value provided here is the sample cast receiver. -->
+
+    <!-- The data-shaka-player tag will make the UI library use this video element.
+            If no video is provided, the UI will automatically make one inside the container div. -->
+  </body>
+</html>

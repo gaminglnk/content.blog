@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="//player2.h-cdn.com/hola_player.js?customer=hc_a031e2c6"></script>
+    <title>Spark Player</title>
+    <link
+      type="image/png"
+      rel="shortcut icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link
+      type="image/png"
+      rel="icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link
+      type="image/png"
+      rel="apple-touch-icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <style>
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .video {
+        width: 100% !important;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function getParameter(parameterName) {
+        let parameters = new URLSearchParams(window.location.search);
+        return parameters.get(parameterName);
+      }
+
+      var videosrc = getParameter("link");
+
+      if (getParameter("link")) {
+        document.write(
+          "<video height='100em' preload='none' id='player' class='video-js video vjs-default-skin' controls ><source src='" +
+            videosrc +
+            "' /></video>"
+        );
+        (function () {
+          window.hola_player();
+        })();
+      }
+    </script>
+  </body>
+</html>
