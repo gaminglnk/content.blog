@@ -18,6 +18,12 @@
       rel="apple-touch-icon"
       href="https://speedynet.eu.org/assets/img/favicon-player.png"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300&display=swap"
+      rel="stylesheet"
+    />
     <style>
       ::-webkit-scrollbar {
         display: none;
@@ -36,6 +42,14 @@
         list-style: none;
         display: flex;
         justify-content: center;
+        object-fit: cover;
+      }
+      .vjs5-hola-skin,
+      .video-js,
+      #player,
+      div {
+        font-family: "Lexend Deca", Roboto, Arial, Helvetica, sans-serif !important;
+        -webkit-font-smoothing: antialiased;
       }
     </style>
   </head>
@@ -50,7 +64,7 @@
 
       if (getParameter("link")) {
         document.write(
-          "<video height='100em' preload='none' id='player' class='video-js video vjs-default-skin' controls ><source src='" +
+          "<video data-poster='https://source.unsplash.com/854x480/?nature,ocean,space,desert,evening' height='100em' preload='none' id='player' class='video-js video vjs-default-skin' controls ><source src='" +
             videosrc +
             "' /></video>"
         );
