@@ -188,6 +188,16 @@
             player.forward(85);
           });
 
+          player.on("enterfullscreen", (event) => {
+            plyer.appendChild(button);
+            window.screen.orientation.lock("landscape");
+          });
+
+          player.on("exitfullscreen", (event) => {
+            document.querySelector(".skip-button").remove();
+            window.screen.orientation.lock("portrait");
+          });
+
           hls.attachMedia(video);
           window.hls = hls;
         }
