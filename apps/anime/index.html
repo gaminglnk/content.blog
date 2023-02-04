@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="//player2.h-cdn.com/hola_player.js?customer=hc_3de34874"></script>
+    <script
+      src="//player.h-cdn.com/loader.js?customer=hc_3de34874"
+      crossorigin="anonymous"
+      async
+    ></script>
+    <title>Spark Player</title>
+    <link
+      type="image/png"
+      rel="shortcut icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link
+      type="image/png"
+      rel="icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link
+      type="image/png"
+      rel="apple-touch-icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .hola_seek_zone {
+        display: none !important;
+      }
+      .video {
+        width: 100% !important;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        object-fit: cover;
+      }
+      .vjs5-hola-skin,
+      .video-js,
+      #player,
+      div {
+        font-family: "Lexend Deca", Roboto, Arial, Helvetica, sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function getParameter(parameterName) {
+        let parameters = new URLSearchParams(window.location.search);
+        return parameters.get(parameterName);
+      }
+
+      // appeal variables & constants
+      const api = "https://api.consumet.org/anime/gogoanime/watch/";
+      var episode_id = getParameter("id");
+      var episode_link = api + episode_id;
+
+      //call the api
+      async function fetchHLS() {
+        const response = await fetch(episode_link);
+        const data = await response.json();
+        console.log(data);
+        const sources = data.sources[4].url;
+        console.log(sources);
+        if (getParameter("id")) {
+          document.write(
+            "<video data-poster='https://source.unsplash.com/854x480/?nature,ocean,space,desert,evening' height='100em' preload='none' id='player' class='video-js video vjs-default-skin' controls ><source src='" +
+              sources +
+              "' /></video>"
+          );
+          (function () {
+            window.hola_player();
+          })();
+        }
+      }
+      fetchHLS();
+
+      /*
+      let api_data = fetch(episode_link);
+      api_data
+        .then((response) => {
+          return response.json();
+        })
+        .then((response) => {
+          console.log(response);
+          var videosrc = api_data["sources"][4]["url"];
+          console.log(videosrc);
+        });
+
+      if (getParameter("id")) {
+        document.write(
+          "<video data-poster='https://source.unsplash.com/854x480/?nature,ocean,space,desert,evening' height='100em' preload='none' id='player' class='video-js video vjs-default-skin' controls ><source src='" +
+            videosrc +
+            "' /></video>"
+        );
+        (function () {
+          window.hola_player();
+        })();
+      }*/
+    </script>
+  </body>
+</html>
