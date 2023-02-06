@@ -74,7 +74,9 @@
       document.addEventListener("DOMContentLoaded", () => {
         const source = getParameter("link");
         const video = document.querySelector("video");
-
+        var winwidth=$(window).width();
+        var winheight=$(window).height();
+ 
         const defaultOptions = {
           captions: { active: true, update: true, language: "en" },
           controls: [
@@ -135,6 +137,16 @@
 
             // Initialize new Plyr player with quality options
             var player = new Plyr(video, defaultOptions);
+            player.forEach (item => {
+
+                item.on('enterfullscreen', event => {
+
+                 $(".plyr__video-wrapper").css({"transform": "rotate(90deg)", "height": winwidth, "width": winheight, "margin-left": "0px", "margin-right": "0px"});
+                })
+                item.on('exitfullscreen', event => {
+                 $(".plyr__video-wrapper").css({"transform": "rotate(0deg)", "height": "100%", "width": "100%", "margin-left": "auto", "margin-right": "auto"});
+                })
+            });
           });
           var button = document.createElement("button");
           button.classList.add("skip-button");
