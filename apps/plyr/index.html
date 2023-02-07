@@ -110,12 +110,7 @@
             // Initialize new Plyr player with quality options
             var player = new Plyr(video, defaultOptions);
           });
-          player.on('enterfullscreen', event => {
-            screen.orientation.lock('landscape');
-          });
-          player.on('exitfullscreen', event => {
-            screen.orientation.lock('portrait');
-          });
+          
           var button = document.createElement("button");
           button.classList.add("skip-button");
           button.innerHTML = "Skip Intro";
