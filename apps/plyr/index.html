@@ -27,43 +27,48 @@
     />
     <link href="https://unpkg.com/plyr@3/dist/plyr.css" rel="stylesheet" />
     <style>
-      ::-webkit-scrollbar {
-        display: none;
-      }
+            ::-webkit-scrollbar {
+              display: none;
+            }
 
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        -ms-overflow-style: none;
-        /* IE and Edge */
-        scrollbar-width: none;
-        /* Firefox */
-      }
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+              -ms-overflow-style: none;
+              /* IE and Edge */
+              scrollbar-width: none;
+              /* Firefox */
+            }
 
-      video {
-        width: 100% !important;
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        display: flex;
-        justify-content: center;
-        object-fit: cover;
-      }
+            video {
+              width: 100% !important;
+              padding: 0;
+              margin: 0;
+              list-style: none;
+              display: flex;
+              justify-content: center;
+              object-fit: cover;
+            }
 
-      .video-js,
-      #player,
-      div {
-        font-family: "Lexend Deca", Roboto, Arial, Helvetica, sans-serif !important;
-        font-weight: 500;
-        -webkit-font-smoothing: antialiased !important;
-      }
+            .video-js,
+            #player,
+            div {
+              font-family: "Lexend Deca", Roboto, Arial, Helvetica, sans-serif !important;
+              font-weight: 500;
+              -webkit-font-smoothing: antialiased !important;
+            }
 
-      :root {
-        --plyr-color-main: #ffae05;
-        --plyr-video-control-color: #ffffff;
-        --plyr-font-weight-regular: 500;
-      }
+            :root {
+      <<<<<<< HEAD
+              --plyr-color-main: #ffae05;
+              --plyr-video-control-color: #ffffff;
+      =======
+              --plyr-color-main: #FFAE05;
+              --plyr-video-control-color: #FFFFFF;
+      >>>>>>> 3e9c4e425cc79b16c0fc3a6910d69bfa2d0227fb
+              --plyr-font-weight-regular: 500;
+            }
     </style>
   </head>
   <body>
@@ -152,7 +157,6 @@
             });
           }
         }
-
         player.on("enterfullscreen", (event) => {
           plyer.appendChild(button);
           window.screen.orientation.lock("landscape");

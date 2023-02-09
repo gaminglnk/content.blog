@@ -148,6 +148,13 @@
         },
       });
       playerget.getPlugin("click_to_pause").disable();
+      if (navigator.userAgent.match('Android')) {
+			playerget.on('fullscreen', function(isFullscreen) {
+				if (isFullscreen) {
+					screen.orientation.lock('landscape');
+				}
+			});
+		};
     </script>
   </body>
 </html>
