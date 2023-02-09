@@ -155,12 +155,12 @@
       });
 
       player.on("enterfullscreen", (event) => {
-        window.screen.orientation.lock("landscape");
+        screen.orientation.lock("landscape");
         console.log("Player set to Landscape!");
       });
 
       player.on("exitfullscreen", (event) => {
-        window.screen.orientation.lock("portrait");
+        screen.orientation.lock("portrait");
         console.log("Player set to Portrait!");
       });
     </script>
