@@ -152,16 +152,15 @@
             });
           }
         }
-      });
+        player.on("enterfullscreen", (event) => {
+          screen.orientation.lock("landscape");
+          console.log("Player set to Landscape!");
+        });
 
-      player.on("enterfullscreen", (event) => {
-        screen.orientation.lock("landscape");
-        console.log("Player set to Landscape!");
-      });
-
-      player.on("exitfullscreen", (event) => {
-        screen.orientation.lock("portrait");
-        console.log("Player set to Portrait!");
+        player.on("exitfullscreen", (event) => {
+          screen.orientation.lock("portrait");
+          console.log("Player set to Portrait!");
+        });
       });
     </script>
   </body>
