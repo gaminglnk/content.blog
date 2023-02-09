@@ -30,14 +30,18 @@
       ::-webkit-scrollbar {
         display: none;
       }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
       }
-      .video {
+
+      video {
         width: 100% !important;
         padding: 0;
         margin: 0;
@@ -46,6 +50,7 @@
         justify-content: center;
         object-fit: cover;
       }
+
       .video-js,
       #player,
       div {
@@ -53,55 +58,11 @@
         font-weight: 500;
         -webkit-font-smoothing: antialiased !important;
       }
-      p {
-        color: white;
-      }
 
-      button {
-        outline: none;
-        border: none;
-        background: transparent;
-        margin-left: 1rem;
-        cursor: pointer;
-      }
-
-      .tooltip {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-      }
-
-      .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: rgba(0, 0, 0, 0.8);
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 5px;
-        position: absolute;
-        z-index: 1;
-        bottom: 150%;
-        left: 50%;
-        margin-left: -60px;
-        opacity: 0;
-        transition: opacity 0.2s;
-      }
-
-      .tooltip .tooltiptext::after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: black transparent transparent transparent;
-      }
-
-      .tooltip:hover .tooltiptext {
-        visibility: visible;
-        opacity: 1;
+      :root {
+        --plyr-color-main: #ffae05;
+        --plyr-video-control-color: #ffffff;
+        --plyr-font-weight-regular: 500;
       }
     </style>
   </head>
@@ -115,13 +76,15 @@
         let parameters = new URLSearchParams(window.location.search);
         return parameters.get(parameterName);
       }
-
       document.addEventListener("DOMContentLoaded", () => {
         const source = getParameter("link");
         const video = document.querySelector("video");
-
         const defaultOptions = {
-          captions: { active: true, update: true, language: "en" },
+          captions: {
+            active: true,
+            update: true,
+            language: "en",
+          },
           controls: [
             "play-large",
             "rewind",
@@ -136,7 +99,6 @@
             "fullscreen",
           ],
         };
-
         if (!Hls.isSupported()) {
           video.src = source;
           var player = new Plyr(video, defaultOptions);
@@ -144,15 +106,10 @@
           // For more Hls.js options, see https://github.com/dailymotion/hls.js
           const hls = new Hls();
           hls.loadSource(source);
-
-          // From the m3u8 playlist, hls parses the manifest and returns
-          // all available video qualities. This is important, in this approach,
-          // we will have one source on the Plyr player.
           hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
             // Transform available levels into an array of integers (height values).
             const availableQualities = hls.levels.map((l) => l.height);
             availableQualities.unshift(0); //prepend 0 to quality array
-
             // Add new qualities to option
             defaultOptions.quality = {
               default: 0, //Default - AUTO
@@ -166,7 +123,6 @@
                 0: "Auto",
               },
             };
-
             hls.on(Hls.Events.LEVEL_SWITCHED, function (event, data) {
               var span = document.querySelector(
                 ".plyr__menu__container [data-plyr='quality'][value='0'] span"
@@ -177,27 +133,9 @@
                 span.innerHTML = `Auto`;
               }
             });
-
             // Initialize new Plyr player with quality options
             var player = new Plyr(video, defaultOptions);
           });
-          var button = document.createElement("button");
-          button.classList.add("skip-button");
-          button.innerHTML = "Skip Intro";
-          button.addEventListener("click", function () {
-            player.forward(85);
-          });
-
-          player.on("enterfullscreen", (event) => {
-            plyer.appendChild(button);
-            window.screen.orientation.lock("landscape");
-          });
-
-          player.on("exitfullscreen", (event) => {
-            document.querySelector(".skip-button").remove();
-            window.screen.orientation.lock("portrait");
-          });
-
           hls.attachMedia(video);
           window.hls = hls;
         }
@@ -214,6 +152,18 @@
             });
           }
         }
+
+        player.on("enterfullscreen", (event) => {
+          plyer.appendChild(button);
+          window.screen.orientation.lock("landscape");
+          console.log("Player set to Landscape!");
+        });
+
+        player.on("exitfullscreen", (event) => {
+          document.querySelector(".skip-button").remove();
+          window.screen.orientation.lock("portrait");
+          console.log("Player set to Portrait!");
+        });
       });
     </script>
   </body>
