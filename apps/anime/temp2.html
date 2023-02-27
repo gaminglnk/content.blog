@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="//player2.h-cdn.com/hola_player.js?customer=hc_3de34874"></script>
+    <script src="//unpkg.com/axios@1"></script>
+    <script
+      src="//player.h-cdn.com/loader.js?customer=hc_3de34874"
+      crossorigin="anonymous"
+      async
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+      crossorigin="anonymous"
+    ></script>
+    <title>Spark Player</title>
+    <link
+      type="image/png"
+      rel="shortcut icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link
+      type="image/png"
+      rel="icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link
+      type="image/png"
+      rel="apple-touch-icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .hola_seek_zone {
+        display: none !important;
+      }
+      .video {
+        width: 100% !important;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        object-fit: cover;
+      }
+      .vjs5-hola-skin,
+      .video-js,
+      #player,
+      div {
+        font-family: "Lexend Deca", Roboto, Arial, Helvetica, sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      function getParameter(parameterName) {
+        let parameters = new URLSearchParams(window.location.search);
+        return parameters.get(parameterName);
+      }
+
+      // api variables
+      const api = "https://api.consumet.org/anime/gogoanime/watch/";
+      const anime_url = api + getParameter("id");
+
+      let afterRequest = (response) => {
+        console.log(
+          "Internal player is : " + response.data.headers.Referer,
+          "\n\nDownload link is : " + response.data.download
+        );
+        let sources = response.data.sources;
+        for (let source of sources) {
+          if (source.quality == "default") {
+            fetchedData = srt(source.url);
+          }
+        }
+      };
+
+      let errorRequest = (error) => {
+        console.error("Sorry! Unable to get the streaming link ready.");
+      };
+
+      let fetchedData = axios
+        .get(anime_url)
+        .then(afterRequest)
+        .catch(errorRequest);
+      const final = str(fetchedData);
+
+      if (typeof fetchedData !== "undefined") {
+        document.write(
+          "<video data-poster='' height='100em' preload='none' id='player' class='video-js video vjs-default-skin' controls ><source src='" +
+            fetchedData +
+            "' /></video>"
+        );
+        (function () {
+          window.hola_player();
+        })();
+      }
+    </script>
+  </body>
+</html>
