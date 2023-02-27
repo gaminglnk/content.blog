@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h2 style="text-align: center; margin: 7px 7px 7px 7px">
+      JavaScript Anime Fetching
+    </h2>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap");
+
+      body {
+        font-family: "Lexend Deca", sans-serif;
+        background-color: #f2f2f2;
+      }
+
+      /* Reset default styles */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      #allData {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Style for the container of the anime info */
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      li {
+        margin-bottom: 10px;
+      }
+
+      .anime-info-list {
+        list-style: none;
+      }
+
+      .anime-info-item {
+        margin-bottom: 10px;
+      }
+
+      .anime-info-key {
+        font-weight: bold;
+        margin-right: 5px;
+      }
+
+      .anime-info-value {
+        display: inline-block;
+      }
+
+      .anime-title {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .anime-image,
+      .anime-cover {
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        max-width: 100%;
+        height: auto;
+      }
+
+      .anime-info-description {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .anime-info-id {
+        font-family: monospace;
+        font-size: 14px;
+        color: #777777;
+        margin-left: 5px;
+      }
+    </style>
+    <style>
+      /* CSS for the episodes section */
+      #episodesContainer {
+        margin-top: 20px;
+      }
+
+      .episodes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 20px;
+      }
+
+      .episode-item {
+        background-color: #ffffff;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .episode-title {
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px;
+      }
+
+      .episode-description {
+        font-size: 14px;
+        padding: 0 10px;
+      }
+
+      .episode-id {
+        font-size: 12px;
+        padding: 10px;
+        background-color: #f3f3f3;
+        text-align: right;
+      }
+
+      .episode-image {
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+        border-radius: 7px;
+      }
+    </style>
+    <div id="allData">
+      <div id="animeInfo"></div>
+      <br />
+      <h2 style="font-weight: bold">The Episodes ...</h2>
+      <br />
+      <div id="episodesContainer"></div>
+    </div>
+    <script>
+      // Fetch data from the API
+      function getParameter(parameterName) {
+        let parameters = new URLSearchParams(window.location.search);
+        return parameters.get(parameterName);
+      }
+      const animeSrc =
+        "https://api.consumet.org/meta/anilist/info/" + getParameter("id");
+      fetch(animeSrc)
+        .then((response) => response.json())
+        .then((data) => {
+          const animeInfo = document.querySelector("#animeInfo");
+
+          // Create an unordered list
+          const list = document.createElement("ul");
+          list.classList.add("anime-info-list");
+
+          // List of keys to ignore
+          const ignoreKeys = [
+            "trailer",
+            "countryOfOrigin",
+            "isAdult",
+            "isLicensed",
+            "synonyms",
+            "color",
+            "popularity",
+            "startDate",
+            "endDate",
+            "currentEpisode",
+            "recommendations",
+            "type",
+            "subOrDub",
+            "characters",
+            "relations",
+            "mappings",
+            "episodes",
+            "season",
+          ];
+
+          // Add each property from the API response as a list item
+          Object.entries(data).forEach(([key, value]) => {
+            // Ignore specific keys
+            if (!ignoreKeys.includes(key)) {
+              const item = document.createElement("li");
+              item.classList.add("anime-info-item");
+
+              const keySpan = document.createElement("span");
+              keySpan.textContent = `${key.charAt(0).toUpperCase()}${key.slice(
+                1
+              )}: `;
+              keySpan.classList.add("anime-info-key");
+              item.appendChild(keySpan);
+
+              const valueContainer = document.createElement("div");
+              valueContainer.classList.add("anime-info-value");
+
+              // Special handling for the anime image
+              if (key === "image") {
+                const img = document.createElement("img");
+                if (data.image) {
+                  img.src = data.image;
+                } else {
+                  img.src =
+                    "https://via.placeholder.com/250x350?text=Unavailable!";
+                }
+                img.alt = data.title.romaji;
+                img.classList.add("anime-image");
+                valueContainer.appendChild(img);
+              }
+              // Special handling for the anime cover
+              else if (key === "cover") {
+                const imgc = document.createElement("img");
+                if (data.cover) {
+                  imgc.src = data.cover;
+                } else {
+                  imgc.src =
+                    "https://via.placeholder.com/250x350?text=Unavailable!";
+                }
+                imgc.alt = data.title.english;
+                imgc.classList.add("anime-cover");
+                valueContainer.appendChild(imgc);
+              }
+              // Special handling for the anime title
+              else if (key === "title") {
+                const title = document.createElement("div");
+                title.textContent = value.english;
+                title.classList.add("anime-title");
+                valueContainer.appendChild(title);
+              }
+              // Regular handling for other properties
+              else {
+                const valueSpan = document.createElement("span");
+                valueSpan.textContent = value;
+                if (key === "description") {
+                  valueSpan.classList.add("anime-info-description");
+                } else if (key === "id" || key === "malId") {
+                  valueSpan.classList.add("anime-info-id");
+                }
+                valueContainer.appendChild(valueSpan);
+              }
+
+              item.appendChild(valueContainer);
+              list.appendChild(item);
+            }
+          });
+
+          // Add the list to the HTML
+          animeInfo.appendChild(list);
+
+          const episodesContainer =
+            document.querySelector("#episodesContainer");
+
+          // Create a grid container for the episodes
+          const grid = document.createElement("div");
+          grid.classList.add("episodes-grid");
+
+          // Iterate over each episode object and create a grid item
+          data.episodes.forEach((episode) => {
+            const item = document.createElement("div");
+            item.classList.add("episode-item");
+
+            // Add the episode title
+            const title = document.createElement("div");
+            title.textContent = `${episode.number}. ${episode.title}`;
+            title.classList.add("episode-title");
+            item.appendChild(title);
+
+            // Add the episode image
+            if (episode.image) {
+              const imge = document.createElement("img");
+              imge.src = episode.image;
+              imge.alt = episode.title;
+              imge.classList.add("episode-image");
+              item.appendChild(imge);
+            }
+
+            // Add the episode description
+            const description = document.createElement("div");
+            description.textContent = episode.description;
+            description.classList.add("episode-description");
+            item.appendChild(description);
+
+            // Add the episode id
+            const id = document.createElement("a");
+            id.textContent = `ID: ${episode.id}`;
+            id.classList.add("episode-id");
+            id.setAttribute(
+              "href",
+              `https://api.consumet.org/anime/gogoanime/watch/${episode.id}`
+            );
+            item.appendChild(id);
+
+            // Add the grid item to the grid container
+            grid.appendChild(item);
+          });
+
+          // Add the grid container to the HTML
+          episodesContainer.appendChild(grid);
+        })
+        .catch((error) => console.error(error));
+    </script>
+  </body>
+</html>

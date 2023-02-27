@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/plyr@3"></script>
+    <script
+      src="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6,Array.prototype.includes,CustomEvent,Object.entries,Object.values,URL"
+      crossorigin="anonymous"
+      async
+    ></script>
+    <title>thePlayer</title>
+    <link
+      type="image/png"
+      rel="shortcut icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link
+      type="image/png"
+      rel="icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link
+      type="image/png"
+      rel="apple-touch-icon"
+      href="https://speedynet.eu.org/assets/img/favicon-player.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://unpkg.com/plyr@3/dist/plyr.css" rel="stylesheet" />
+    <style>
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      .video {
+        width: 100% !important;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        object-fit: cover;
+      }
+      .video-js,
+      #player,
+      div {
+        font-family: "Lexend Deca", Roboto, Arial, Helvetica, sans-serif !important;
+        -webkit-font-smoothing: antialiased !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <video preload="none" id="player" autoplay controls crossorigin></video>
+    </div>
+    <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
+    <script>
+      function getParameter(parameterName) {
+        let parameters = new URLSearchParams(window.location.search);
+        return parameters.get(parameterName);
+      }
+
+      // appeal variables & constants
+      const api = "https://api.consumet.org/anime/gogoanime/watch/";
+      var episode_id = getParameter("id");
+      var episode_link = api + episode_id;
+
+      //call the api
+      /*
+       function fetchHLS() {
+         const response = fetch(episode_link);
+         const data = response.json();
+         console.log(data);
+
+         let [db1, db2, db3, db4, db5, db6, db7] = data.sources;
+         // console.log(db5, db6, db7);
+         if (db4.quality == "default") {
+           const selectHLS = db4.url;
+           console.log(selectHLS);
+         } else if (db5.quality == "default") {
+           const selectHLS = db5.url;
+           console.log(selectHLS);
+         } else if (db6.quality == "default") {
+           const selectHLS = db6.url;
+           console.log(selectHLS);
+         } else if (db7.quality == "default") {
+           const selectHLS = db7.url;
+           console.log(selectHLS);
+         } else {
+           console.log("Sorry for Inconvenience, No HLS streams are found!");
+         }
+
+         document.write(
+           "<video data-poster='https://source.unsplash.com/854x480/?nature,ocean,space,desert,evening' height='100em' preload='none' id='player' class='video-js video vjs-default-skin' controls ><source src='" +
+             selectHLS +
+             "' /></video>"
+         );
+       }
+       fetchHLS();
+
+
+       let api_data = fetch(episode_link);
+       api_data
+         .then((response) => {
+           return response.json();
+         })
+         .then((response) => {
+           console.log(response);
+           let [db1, db2, db3, db4, db5, db6, db7] = data.sources;
+         });*/
+
+      let api_data = fetch(episode_link);
+      api_data
+        .then((response) => response.json())
+        .then((data) =>
+          document.write(
+            "<video data-poster='https://source.unsplash.com/854x480/?nature,ocean,space,desert,evening' height='100em' preload='none' id='player' class='video-js video vjs-default-skin' controls ><source src='" +
+              data.sources[4].url +
+              "' /></video>"
+          )
+        );
+
+      (function () {
+        window.hola_player();
+      })();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const video = document.querySelector("video");
+
+        // For more options see: https://github.com/sampotts/plyr/#options
+        // captions.update is required for captions to work with hls.js
+        const player = new Plyr(video, {
+          captions: { active: true, update: true, language: "en" },
+        });
+
+        if (!Hls.isSupported()) {
+          video.src = source;
+        } else {
+          // For more Hls.js options, see https://github.com/dailymotion/hls.js
+          const hls = new Hls();
+          hls.attachMedia(video);
+          window.hls = hls;
+
+          // Handle changing captions
+          player.on("languagechange", () => {
+            // Caption support is still flaky. See: https://github.com/sampotts/plyr/issues/994
+            setTimeout(() => (hls.subtitleTrack = player.currentTrack), 50);
+          });
+        }
+
+        // Expose player so it can be used from the console
+        window.player = player;
+      });
+
+      if (getParameter("id")) {
+        document.write(
+          "<video data-poster='https://source.unsplash.com/854x480/?nature,ocean,space,desert,evening' height='100em' preload='none' id='player' class='video-js video vjs-default-skin' controls ><source src='" +
+            videosrc +
+            "' /></video>"
+        );
+        (function () {
+          window.hola_player();
+        })();
+      }
+    </script>
+  </body>
+</html>
