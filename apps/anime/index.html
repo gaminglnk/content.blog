@@ -6,19 +6,28 @@
     </h2>
 
     <style>
+      /* Default styles */
       @import url("https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap");
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
       body {
         font-family: "Lexend Deca", sans-serif;
         background-color: #f2f2f2;
       }
 
-      /* Reset default styles */
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+      h2 {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        margin: 7px;
       }
+
+      /* Container styles */
 
       #allData {
         max-width: 600px;
@@ -29,7 +38,8 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       }
 
-      /* Style for the container of the anime info */
+      /* Anime info styles */
+
       ul {
         list-style-type: none;
         padding: 0;
@@ -82,9 +92,9 @@
         color: #777777;
         margin-left: 5px;
       }
-    </style>
-    <style>
-      /* CSS for the episodes section */
+
+      /* Episodes section styles */
+
       #episodesContainer {
         margin-top: 20px;
       }
@@ -129,6 +139,58 @@
         margin-right: auto;
         width: 50%;
         border-radius: 7px;
+      }
+
+      /* Media queries for responsive design */
+
+      @media only screen and (max-width: 768px) {
+        /* Adjust max-width for small screens */
+        #allData {
+          max-width: 90%;
+        }
+
+        /* Adjust grid columns for small screens */
+        .episodes-grid {
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        /* Adjust font sizes for small screens */
+        h1 {
+          font-size: 36px;
+        }
+        h2 {
+          font-size: 24px;
+        }
+        p {
+          font-size: 16px;
+        }
+      }
+      /* Adjust column layout for small screens */
+      @media screen and (max-width: 768px) {
+        .row {
+          display: block;
+        }
+        .column {
+          width: 100%;
+        }
+      }
+
+      /* Adjust column layout for medium screens */
+      @media screen and (min-width: 769px) and (max-width: 1024px) {
+        .column {
+          width: 50%;
+          float: left;
+        }
+      }
+
+      /* Adjust column layout for large screens */
+      @media screen and (min-width: 1025px) {
+        .row {
+          display: flex;
+        }
+        .column {
+          width: 33.33%;
+        }
       }
     </style>
     <div id="allData">

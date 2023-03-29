@@ -58,12 +58,6 @@
         font-weight: 500;
         -webkit-font-smoothing: antialiased !important;
       }
-
-      :root {
-        --plyr-color-main: #ffae05;
-        --plyr-video-control-color: #ffffff;
-        --plyr-font-weight-regular: 500;
-      }
     </style>
   </head>
   <body>
@@ -152,15 +146,6 @@
             });
           }
         }
-      });
-      player.on("enterfullscreen", (event) => {
-        screen.orientation.lock("landscape");
-        console.log("Player set to Landscape!");
-      });
-
-      player.on("exitfullscreen", (event) => {
-        screen.orientation.lock("portrait");
-        console.log("Player set to Portrait!");
       });
     </script>
   </body>
