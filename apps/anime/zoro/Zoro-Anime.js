@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   // Fallback option
   if (!Hls.isSupported()) {
-    videoElement.src = source;
     var player = new Plyr(videoElement, defaultOptions);
   } else {
     // For more Hls.js options, see https://github.com/dailymotion/hls.js
@@ -102,6 +101,18 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       // construct the player.
       var player = new Plyr(videoElement, defaultOptions);
+
+      // Lock orientation to landscape mode when in fullscreen mode
+      player.on("enterfullscreen", () => {
+        console.log("Entered fullscreen.");
+        window.screen.orientation.lock("landscape");
+      });
+
+      // Unlock orientation when exiting fullscreen mode
+      player.on("exitfullscreen", () => {
+        console.log("Exit fullscreen.");
+        window.screen.orientation.unlock();
+      });
     });
     hls.attachMedia(videoElement);
     window.hls = hls;
