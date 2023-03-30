@@ -75,25 +75,6 @@
         return parameters.get(parameterName);
       }
 
-      // Detect whether the screen is in portrait or landscape mode
-      function isPortrait() {
-        var checkOrientation = window.matchMedia(
-          "(orientation: portrait)"
-        ).matches;
-        return checkOrientation;
-      }
-
-      // Rotate the screen to landscape or portrait mode
-      function rotateScreen() {
-        if (isPortrait() && !document.fullscreenElement) {
-          screen.orientation.lock("landscape");
-          console.log("isPortrait :", isPortrait());
-        } else if (!isPortrait() && document.fullscreenElement) {
-          screen.orientation.lock("portrait");
-          console.log("isPortrait :", isPortrait());
-        }
-      }
-
       document.addEventListener("DOMContentLoaded", () => {
         const source = getParameter("link");
         const video = document.querySelector("video");
@@ -153,14 +134,45 @@
             });
             // Initialize new Plyr player with quality options
             var player = new Plyr(video, defaultOptions);
-            // Attach event listeners to the player
-            player.on("enterfullscreen", () => {
-              rotateScreen();
-            });
 
-            player.on("exitfullscreen", () => {
-              rotateScreen();
-            });
+            // Check if browser is mobile
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(
+              navigator.userAgent
+            );
+
+            // Screen orientation change handler
+            const handleOrientationChange = () => {
+              const { screen } = window;
+
+              if (
+                screen.orientation.type.startsWith("portrait") &&
+                screen.width > screen.height
+              ) {
+                screen.orientation.lock("landscape-primary");
+              } else if (
+                screen.orientation.type.startsWith("landscape") &&
+                screen.width < screen.height
+              ) {
+                screen.orientation.lock("portrait-primary");
+              }
+            };
+
+            // Add event listeners to toggle screen orientation on full screen enter/exit
+            if (isMobile) {
+              player.on("enterfullscreen", () => {
+                screen.orientation.addEventListener(
+                  "change",
+                  handleOrientationChange
+                );
+              });
+
+              player.on("exitfullscreen", () => {
+                screen.orientation.removeEventListener(
+                  "change",
+                  handleOrientationChange
+                );
+              });
+            }
           });
           hls.attachMedia(video);
           window.hls = hls;
