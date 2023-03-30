@@ -69,10 +69,31 @@
       <video preload="none" id="player" autoplay controls crossorigin></video>
     </div>
     <script>
+      // Fetch URL parameters to get the video url
       function getParameter(parameterName) {
         let parameters = new URLSearchParams(window.location.search);
         return parameters.get(parameterName);
       }
+
+      // Detect whether the screen is in portrait or landscape mode
+      function isPortrait() {
+        var checkOrientation = window.matchMedia(
+          "(orientation: portrait)"
+        ).matches;
+        return checkOrientation;
+      }
+
+      // Rotate the screen to landscape or portrait mode
+      function rotateScreen() {
+        if (isPortrait() && !document.fullscreenElement) {
+          screen.orientation.lock("landscape");
+          console.log("isPortrait :", isPortrait());
+        } else if (!isPortrait() && document.fullscreenElement) {
+          screen.orientation.lock("portrait");
+          console.log("isPortrait :", isPortrait());
+        }
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
         const source = getParameter("link");
         const video = document.querySelector("video");
@@ -132,6 +153,14 @@
             });
             // Initialize new Plyr player with quality options
             var player = new Plyr(video, defaultOptions);
+            // Attach event listeners to the player
+            player.on("enterfullscreen", () => {
+              rotateScreen();
+            });
+
+            player.on("exitfullscreen", () => {
+              rotateScreen();
+            });
           });
           hls.attachMedia(video);
           window.hls = hls;
