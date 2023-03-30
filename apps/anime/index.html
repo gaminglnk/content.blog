@@ -346,10 +346,7 @@
             const id = document.createElement("a");
             id.textContent = `ID: ${episode.id}`;
             id.classList.add("episode-id");
-            id.setAttribute(
-              "href",
-              `https://api.consumet.org/anime/gogoanime/watch/${episode.id}`
-            );
+            id.setAttribute("href", `../id=${episode.id}`);
             item.appendChild(id);
 
             // Add the grid item to the grid container

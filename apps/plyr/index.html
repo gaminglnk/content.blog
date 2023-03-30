@@ -2,8 +2,10 @@
 <html>
   <head>
     <script src="https://unpkg.com/plyr@3"></script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6,Array.prototype.includes,CustomEvent,Object.entries,Object.values,URL"></script>
+    <script src="https://cdn.jsdelivr.net/gh/video-dev/hls.js/dist/hls.min.js"></script>
     <title>thePlayer</title>
+
+    <!-- Images -->
     <link
       type="image/png"
       rel="shortcut icon"
@@ -19,10 +21,12 @@
       rel="apple-touch-icon"
       href="https://speedynet.eu.org/assets/img/favicon-player.png"
     />
+
+    <!-- Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap"
       rel="stylesheet"
     />
     <link href="https://unpkg.com/plyr@3/dist/plyr.css" rel="stylesheet" />
@@ -64,7 +68,6 @@
     <div class="container">
       <video preload="none" id="player" autoplay controls crossorigin></video>
     </div>
-    <script src="https://cdn.rawgit.com/video-dev/hls.js/18bb552/dist/hls.min.js"></script>
     <script>
       function getParameter(parameterName) {
         let parameters = new URLSearchParams(window.location.search);
