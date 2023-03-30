@@ -69,12 +69,13 @@
       <video preload="none" id="player" autoplay controls crossorigin></video>
     </div>
     <script>
-      // Fetch URL parameters to get the video url
+      // Fetch URL parameters.
       function getParameter(parameterName) {
         let parameters = new URLSearchParams(window.location.search);
         return parameters.get(parameterName);
       }
 
+      // Process the video after content load.
       document.addEventListener("DOMContentLoaded", () => {
         const source = getParameter("link");
         const video = document.querySelector("video");
@@ -135,44 +136,17 @@
             // Initialize new Plyr player with quality options
             var player = new Plyr(video, defaultOptions);
 
-            // Check if browser is mobile
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(
-              navigator.userAgent
-            );
+            // Lock orientation to landscape mode when in fullscreen mode
+            player.on("enterfullscreen", () => {
+              console.log("Entered fullscreen.");
+              window.screen.orientation.lock("landscape");
+            });
 
-            // Screen orientation change handler
-            const handleOrientationChange = () => {
-              const { screen } = window;
-
-              if (
-                screen.orientation.type.startsWith("portrait") &&
-                screen.width > screen.height
-              ) {
-                screen.orientation.lock("landscape-primary");
-              } else if (
-                screen.orientation.type.startsWith("landscape") &&
-                screen.width < screen.height
-              ) {
-                screen.orientation.lock("portrait-primary");
-              }
-            };
-
-            // Add event listeners to toggle screen orientation on full screen enter/exit
-            if (isMobile) {
-              player.on("enterfullscreen", () => {
-                screen.orientation.addEventListener(
-                  "change",
-                  handleOrientationChange
-                );
-              });
-
-              player.on("exitfullscreen", () => {
-                screen.orientation.removeEventListener(
-                  "change",
-                  handleOrientationChange
-                );
-              });
-            }
+            // Unlock orientation when exiting fullscreen mode
+            player.on("exitfullscreen", () => {
+              console.log("Exit fullscreen.");
+              window.screen.orientation.unlock();
+            });
           });
           hls.attachMedia(video);
           window.hls = hls;
