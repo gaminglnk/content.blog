@@ -9,10 +9,10 @@ function getSpriteFromVtt(url) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const sourceZoro = getParameter("id").replace(/both$/, "dub");
+  const zoroID = getParameter("id").replace(/both$/, "dub");
   const videoElement = document.querySelector("video");
   const sourceUrl =
-    "https://api.consumet.org/anime/zoro/watch?episodeId=" + sourceZoro;
+    "https://api.consumet.org/anime/zoro/watch?episodeId=" + zoroID;
 
   const defaultOptions = {
     captions: {
@@ -46,18 +46,28 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((response) => response.json())
       .then((data) => {
         // Select the multiquality stream.
-        var sourcesArray = data.sources;
+        const sourcesArray = data.sources;
         var defaultQualityObj = sourcesArray.find(
           (source) => source.quality === "auto"
         );
         var defaultQualitySource = defaultQualityObj.url;
 
         // Select the previews and subs.
-        var subtitleArray = data.subtitles;
-        var previewSrc = subtitleArray.find(
+        const subtitleArray = data.subtitles;
+
+        var thumbnailSub = subtitleArray.find(
           (previews) => previews.lang === "Thumbnails"
-        ).url;
-        var engSrc = subtitleArray.find((subs) => subs.lang === "English").url;
+        );
+        if (thumbnailSub && thumbnailSub.url) {
+          var previewSrc = thumbnailSub.url;
+        }
+
+        var englishSub = subtitleArray.find(
+          (previews) => previews.lang === "English"
+        );
+        if (englishSub && englishSub.url) {
+          var engSrc = englishSub.url;
+        }
 
         // Implement the subtitles and previews.
         document.getElementById("eng").setAttribute("src", engSrc);
