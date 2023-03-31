@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Select the multiquality stream.
         var sourcesArray = data.sources;
         var defaultQualityObj = sourcesArray.find(
-          (source) => source.quality === "default"
+          (source) => source.quality === "backup"
         );
         var defaultQualitySource = defaultQualityObj.url;
         // console.log("The manifest is :", defaultQualitySource);
