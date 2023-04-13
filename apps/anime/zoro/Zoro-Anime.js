@@ -10,7 +10,7 @@ function getSpriteFromVtt(url) {
 
 document.addEventListener("DOMContentLoaded", () => {
   const zoroID = getParameter("id").replace(/both$/, "dub");
-  const corsProxy = "https://cors.zimjs.com/"
+  const corsProxy = "https://cors.zimjs.com/";
   const videoElement = document.querySelector("video");
   const sourceUrl =
     "https://api.consumet.org/anime/zoro/watch?episodeId=" + zoroID;
