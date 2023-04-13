@@ -10,6 +10,7 @@ function getSpriteFromVtt(url) {
 
 document.addEventListener("DOMContentLoaded", () => {
   const zoroID = getParameter("id").replace(/both$/, "dub");
+  const corsProxy = "https://cors.zimjs.com/"
   const videoElement = document.querySelector("video");
   const sourceUrl =
     "https://api.consumet.org/anime/zoro/watch?episodeId=" + zoroID;
@@ -50,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         var defaultQualityObj = sourcesArray.find(
           (source) => source.quality === "auto"
         );
-        var defaultQualitySource = defaultQualityObj.url;
+        var defaultQualitySource = corsProxy + defaultQualityObj.url;
 
         // Select the previews and subs.
         const subtitleArray = data.subtitles;
@@ -59,14 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
           (previews) => previews.lang === "Thumbnails"
         );
         if (thumbnailSub && thumbnailSub.url) {
-          var previewSrc = thumbnailSub.url;
+          var previewSrc = corsProxy + thumbnailSub.url;
         }
 
         var englishSub = subtitleArray.find(
           (previews) => previews.lang === "English"
         );
         if (englishSub && englishSub.url) {
-          var engSrc = englishSub.url;
+          var engSrc = corsProxy + englishSub.url;
         }
 
         // Implement the subtitles and previews.
