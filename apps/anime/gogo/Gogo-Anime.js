@@ -4,6 +4,7 @@ function getParameter(parameterName) {
 }
 document.addEventListener("DOMContentLoaded", () => {
   const videoElement = document.querySelector("video");
+  const corsProxy = "https://cors.zimjs.com/";
   const sourceUrl =
     "https://api.consumet.org/anime/gogoanime/watch/" + getParameter("id");
 
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         var defaultQualityObj = sourcesArray.find(
           (source) => source.quality === "backup"
         );
-        var defaultQualitySource = defaultQualityObj.url;
+        var defaultQualitySource = corsProxy + defaultQualityObj.url;
         // console.log("The manifest is :", defaultQualitySource);
         hls.loadSource(defaultQualitySource);
       });
