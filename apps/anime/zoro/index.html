@@ -38,7 +38,9 @@
       :root {
         --plyr-color-main: #7676ff;
       }
-      * {
+      *,
+      body,
+      html {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -55,6 +57,7 @@
         list-style: none;
         display: flex;
         justify-content: center;
+        object-fit: contain;
       }
       .video-js,
       #player,
