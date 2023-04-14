@@ -2,7 +2,7 @@
 <html>
   <body>
     <h2 style="text-align: center; margin: 7px 7px 7px 7px">
-      JavaScript Anime Fetching
+      Zoro Fetching
     </h2>
 
     <style>
@@ -207,7 +207,7 @@
         return parameters.get(parameterName);
       }
       const animeSrc =
-        "https://api.consumet.org/meta/anilist/info/" + getParameter("id");
+        "https://zoro-engine.vercel.app/meta/anilist/info/" + getParameter("id") + "?provider=zoro";
       fetch(animeSrc)
         .then((response) => response.json())
         .then((data) => {
@@ -346,7 +346,7 @@
             const id = document.createElement("a");
             id.textContent = `ID: ${episode.id}`;
             id.classList.add("episode-id");
-            id.setAttribute("href", `/apps/anime/gogo/?id=${episode.id}`);
+            id.setAttribute("href", `/apps/anime/zoro?id=${episode.id}`);
             item.appendChild(id);
 
             // Add the grid item to the grid container
